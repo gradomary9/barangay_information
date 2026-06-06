@@ -5,7 +5,7 @@ A Laravel-based Barangay Information System for managing residents, households, 
 ## Developers
 
 - Mary Grado
-- Juliana Marie D.Espenocilla
+- Juliana Marie D. Espenocilla
 - Sheriene Mae F. Escaño
 
 ## Main Features
@@ -168,14 +168,3 @@ https://github.com/gradomary9/barangay_information
 ```txt
 https://barangay-information-gz3e.onrender.com
 ```
-
-## Notes for Defense
-
-Be ready to explain:
-
-- Difference between web routes and API routes
-- Why API route names use the `api.` prefix
-- How admin middleware protects admin pages
-- How the resident-clearance relationship works
-- How reports are exported
-- How CRUD operations work in controllers
