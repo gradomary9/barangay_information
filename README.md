@@ -24,7 +24,7 @@ A Laravel-based Barangay Information System for managing residents, households, 
 - Login and session-based access
 - Request barangay clearance
 - Track clearance request status
-- View announcements
+- View announcements 
 
 ### REST API
 The API endpoints are separate from the web pages and use the `/api` prefix.
