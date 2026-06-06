@@ -13,15 +13,23 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     nodejs \
     npm \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath gd
+    && docker-php-ext-install pdo pdo_mysql pdo_sqlite mbstring zip exif pcntl bcmath gd
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
-RUN mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
+RUN mkdir -p bootstrap/cache \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    database
 
-RUN chmod -R 775 bootstrap/cache storage
+RUN touch database/database.sqlite
+
+RUN chmod -R 775 bootstrap/cache storage database
+RUN chown -R www-data:www-data /var/www/html
 
 RUN composer install --no-dev --optimize-autoloader
 
@@ -35,8 +43,6 @@ COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
 
 RUN a2enmod rewrite
 
-RUN chown -R www-data:www-data /var/www/html
-
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD php artisan migrate --force && php artisan db:seed --force && apache2-foreground
