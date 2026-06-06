@@ -23,12 +23,9 @@ RUN mkdir -p bootstrap/cache \
     storage/framework/cache \
     storage/framework/sessions \
     storage/framework/views \
-    storage/logs \
-    database
+    storage/logs
 
-RUN touch database/database.sqlite
-
-RUN chmod -R 775 bootstrap/cache storage database
+RUN chmod -R 775 bootstrap/cache storage
 RUN chown -R www-data:www-data /var/www/html
 
 RUN composer install --no-dev --optimize-autoloader
@@ -45,4 +42,4 @@ RUN a2enmod rewrite
 
 EXPOSE 80
 
-CMD php artisan migrate --force && php artisan db:seed --force && apache2-foreground
+CMD sh -c "touch /tmp/database.sqlite && chmod 666 /tmp/database.sqlite && php artisan migrate --force && php artisan db:seed --force && apache2-foreground"
