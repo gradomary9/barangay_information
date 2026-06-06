@@ -26,8 +26,11 @@ class ResidentController
                         ->orWhere('middle_name', 'like', "%{$search}%")
                         ->orWhere('last_name', 'like', "%{$search}%")
                         ->orWhere('contact_number', 'like', "%{$search}%")
-                        ->orWhere('address', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhereHas('household', function ($householdQuery) use ($search) {
+                            $householdQuery->where('address', 'like', "%{$search}%")
+                                ->orWhere('purok', 'like', "%{$search}%");
+                        })
                         ->orWhereHas('user', function ($userQuery) use ($search) {
                             $userQuery->where('email', 'like', "%{$search}%")
                                 ->orWhere('name', 'like', "%{$search}%");
@@ -48,7 +51,7 @@ class ResidentController
             ->orderBy('name')
             ->get();
 
-        $households = Household::orderBy('barangay')->get();
+        $households = Household::orderBy('id')->get();
 
         return view('admin.residents.create', compact('users', 'households'));
     }
@@ -67,7 +70,6 @@ class ResidentController
             'birth_date' => 'required|date',
             'gender' => 'required|in:male,female,other',
             'contact_number' => 'required|string|max:20',
-            'address' => 'required|string',
         ]);
 
         DB::transaction(function () use ($validated) {
@@ -88,7 +90,7 @@ class ResidentController
                 'birth_date' => $validated['birth_date'],
                 'gender' => $validated['gender'],
                 'contact_number' => $validated['contact_number'],
-                'address' => $validated['address'],
+                'address' => Household::find($validated['household_id'] ?? null)?->purok ?? 'Unassigned',
             ]);
         });
 
@@ -109,7 +111,7 @@ class ResidentController
             ->orderBy('name')
             ->get();
 
-        $households = Household::orderBy('barangay')->get();
+        $households = Household::orderBy('id')->get();
 
         return view('admin.residents.edit', compact('resident', 'users', 'households'));
     }
@@ -138,7 +140,6 @@ class ResidentController
             'birth_date' => 'required|date',
             'gender' => 'required|in:male,female,other',
             'contact_number' => 'required|string|max:20',
-            'address' => 'required|string',
         ]);
 
         DB::transaction(function () use ($validated, $resident) {
@@ -175,7 +176,7 @@ class ResidentController
                 'birth_date' => $validated['birth_date'],
                 'gender' => $validated['gender'],
                 'contact_number' => $validated['contact_number'],
-                'address' => $validated['address'],
+                'address' => Household::find($validated['household_id'] ?? null)?->purok ?? 'Unassigned',
             ]);
         });
 

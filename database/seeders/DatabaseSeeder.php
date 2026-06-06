@@ -34,10 +34,10 @@ class DatabaseSeeder extends Seeder
         );
 
         $household = Household::updateOrCreate(
-            ['address' => 'Purok 1, Barangay Centro'],
+            ['address' => 'Barangay Centro'],
             [
                 'barangay' => 'Centro',
-                'purok' => 'Purok 1',
+                'purok' => '1',
             ]
         );
 
@@ -51,11 +51,13 @@ class DatabaseSeeder extends Seeder
                 'birth_date' => now()->subYears(30)->toDateString(),
                 'gender' => 'male',
                 'contact_number' => '09123456789',
-                'address' => 'Purok 1, Barangay Centro',
+                'address' => 'Barangay Centro',
             ]
         );
 
-        $household->update(['household_head_id' => $resident->id]);
+        $household->update([
+            'household_head_id' => $resident->id,
+        ]);
 
         $residentTwoUser = User::updateOrCreate(
             ['email' => 'maria@gmail.com'],
@@ -76,34 +78,48 @@ class DatabaseSeeder extends Seeder
                 'birth_date' => now()->subYears(26)->toDateString(),
                 'gender' => 'female',
                 'contact_number' => '09987654321',
-                'address' => 'Purok 1, Barangay Centro',
+                'address' => 'Barangay Centro',
             ]
         );
 
         Clearance::updateOrCreate(
-            ['resident_id' => $resident->id, 'purpose' => 'Employment requirement'],
-            ['status' => 'pending', 'requested_at' => now()->subDays(2)]
+            [
+                'resident_id' => $resident->id,
+                'purpose' => 'Employment requirement',
+            ],
+            [
+                'status' => 'pending',
+                'requested_at' => now()->subDays(2),
+            ]
         );
 
         Clearance::updateOrCreate(
-            ['resident_id' => $residentTwo->id, 'purpose' => 'School requirement'],
-            ['status' => 'approved', 'requested_at' => now()->subDays(5), 'issued_at' => now()->subDays(4)]
+            [
+                'resident_id' => $residentTwo->id,
+                'purpose' => 'School requirement',
+            ],
+            [
+                'status' => 'approved',
+                'requested_at' => now()->subDays(5),
+                'issued_at' => now()->subDays(4),
+            ]
         );
 
-     Blotter::updateOrCreate(
-    [
-        'complainant_name' => 'Juan Cruz',
-        'respondent_name' => 'Maria Santos',
-        'incident_date' => now()->subDays(1)->toDateString(),
-    ],
-    [
-        'complainant_id' => $resident->id,
-        'respondent_id' => $residentTwo->id,
-        'incident_description' => 'Sample noise complaint for testing blotter records.',
-        'location' => 'Purok 1, Barangay Centro',
-        'status' => 'open',
-    ]
-);
+        Blotter::updateOrCreate(
+            [
+                'complainant_name' => 'Juan Cruz',
+                'respondent_name' => 'Maria Santos',
+                'incident_date' => now()->subDays(1)->toDateString(),
+            ],
+            [
+                'complainant_id' => $resident->id,
+                'respondent_id' => $residentTwo->id,
+                'incident_description' => 'Sample noise complaint for testing blotter records.',
+                'location' => 'Barangay Centro',
+                'status' => 'open',
+            ]
+        );
+
         Announcement::updateOrCreate(
             ['title' => 'Barangay Clean-up Drive'],
             [

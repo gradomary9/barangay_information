@@ -53,7 +53,7 @@
                             <option value="">No household assigned</option>
                             @foreach($households as $household)
                                 <option value="{{ $household->id }}" {{ old('household_id') == $household->id ? 'selected' : '' }}>
-                                    {{ $household->address }} - {{ $household->barangay }}
+                                    Household #{{ $household->id }} - {{ $household->address }}@if($household->purok) - Zone {{ $household->purok }} @endif
                                 </option>
                             @endforeach
                         </select>
@@ -101,11 +101,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-3 mt-3">
-                        <label class="form-label">Address</label>
-                        <textarea name="address" class="form-control @error('address') is-invalid @enderror" rows="3" required>{{ old('address') }}</textarea>
-                        @error('address')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    </div>
+                    <br>
 
                     <div class="d-flex justify-content-end gap-2">
                         <a href="{{ route('residents.index') }}" class="btn btn-secondary">Cancel</a>

@@ -19,13 +19,13 @@
 
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Barangay</label>
-                            <input type="text" name="barangay" value="{{ old('barangay') }}" class="form-control @error('barangay') is-invalid @enderror" required>
-                            @error('barangay')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <label class="form-label">Number of Residents in this Household</label>
+                            <input type="text" class="form-control" value="0" readonly>
+                            <small class="text-muted">This will update automatically when residents are assigned to this household.</small>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Purok</label>
-                            <input type="text" name="purok" value="{{ old('purok') }}" class="form-control @error('purok') is-invalid @enderror">
+                            <label class="form-label">Zone</label>
+                            <input type="text" name="purok" value="{{ old('purok') }}" class="form-control @error('purok') is-invalid @enderror" placeholder="Type zone">
                             @error('purok')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>

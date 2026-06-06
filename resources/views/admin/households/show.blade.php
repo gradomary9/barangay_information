@@ -7,16 +7,20 @@
                     <p>{{ $household->address }}</p>
                 </div>
                 <div class="mb-3">
-                    <strong>Barangay:</strong>
-                    <p>{{ $household->barangay }}</p>
+                    <strong>Household Number:</strong>
+                    <p>Household #{{ $household->id }}</p>
                 </div>
                 <div class="mb-3">
-                    <strong>Purok:</strong>
+                    <strong>Zone:</strong>
                     <p>{{ $household->purok ?? 'N/A' }}</p>
                 </div>
                 <div class="mb-3">
                     <strong>Household Head:</strong>
                     <p>{{ $household->household_head_name ?? trim(($household->head?->first_name ?? '') . ' ' . ($household->head?->last_name ?? '')) ?: 'No head assigned' }}</p>
+                </div>
+                <div class="mb-3">
+                    <strong>Number of Residents:</strong>
+                    <p><span class="badge bg-primary">{{ $household->residents->count() }}</span></p>
                 </div>
                 <div class="mb-3">
                     <strong>Members:</strong>

@@ -14,7 +14,7 @@
         <form method="GET" action="{{ route('residents.index') }}" class="row g-2 mb-3">
             <div class="col-md-6">
                 <input type="text" name="search" value="{{ $search ?? '' }}" class="form-control"
-                       placeholder="Search name, email, contact, or address...">
+                       placeholder="Search name, email, contact, household, or zone...">
             </div>
             <div class="col-md-3">
                 <select name="gender" class="form-select">
@@ -36,9 +36,11 @@
             <table class="table table-hover align-middle">
                 <x-table.head>
                     <th>Name</th>
+                    <th>Birth Date</th>
+                    <th>Gender</th>
                     <th>Email</th>
                     <th>Contact</th>
-                    <th>Address</th>
+                    <th>Zone</th>
                     <th>Household</th>
                     <th>Actions</th>
                 </x-table.head>
@@ -47,10 +49,12 @@
                     @forelse($residents as $resident)
                         <x-table.row>
                             <td><strong>{{ $resident->first_name ?? '' }} {{ $resident->last_name ?? '' }}</strong></td>
+                            <td>{{ $resident->birth_date ? $resident->birth_date->format('M d, Y') : 'N/A' }}</td>
+                            <td>{{ $resident->gender ? ucfirst($resident->gender) : 'N/A' }}</td>
                             <td>{{ $resident->email ?? $resident->user?->email ?? 'N/A' }}</td>
                             <td>{{ $resident->contact_number ?? 'N/A' }}</td>
-                            <td>{{ $resident->address ?? 'N/A' }}</td>
-                            <td>{{ $resident->household?->barangay ?? 'Unassigned' }}</td>
+                            <td>{{ $resident->household?->purok ?? 'N/A' }}</td>
+                            <td>{{ $resident->household ? 'Household #' . $resident->household->id : 'Unassigned' }}</td>
                             <td>
                                 <a href="{{ route('residents.show', $resident) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
                                 <a href="{{ route('residents.edit', $resident) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
@@ -65,7 +69,7 @@
                         </x-table.row>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center text-muted py-4">No residents found.</td>
+                            <td colspan="8" class="text-center text-muted py-4">No residents found.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -13,11 +13,11 @@ class HouseholdController
     {
         $search = $request->query('search');
 
-        $households = Household::with(['head', 'residents'])
+        $households = Household::with(['head', 'residents'])->withCount('residents')
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('address', 'like', "%{$search}%")
-                        ->orWhere('barangay', 'like', "%{$search}%")
+                        ->orWhere('id', 'like', "%{$search}%")
                         ->orWhere('purok', 'like', "%{$search}%")
                         ->orWhere('household_head_name', 'like', "%{$search}%")
                         ->orWhereHas('head', fn ($headQuery) => $headQuery
@@ -42,11 +42,15 @@ class HouseholdController
         $validated = $request->validate([
             'household_head_name' => 'nullable|string|max:255',
             'address' => 'required|string',
-            'barangay' => 'required|string|max:255',
             'purok' => 'nullable|string|max:255',
         ]);
 
-        Household::create($validated);
+        Household::create([
+            'household_head_name' => $validated['household_head_name'] ?? null,
+            'address' => $validated['address'],
+            'barangay' => 'N/A',
+            'purok' => $validated['purok'] ?? null,
+        ]);
         return redirect()->route('households.index')->with('success', 'Household created successfully!');
     }
 
@@ -66,11 +70,15 @@ class HouseholdController
         $validated = $request->validate([
             'household_head_name' => 'nullable|string|max:255',
             'address' => 'required|string',
-            'barangay' => 'required|string|max:255',
             'purok' => 'nullable|string|max:255',
         ]);
 
-        $household->update($validated);
+        $household->update([
+            'household_head_name' => $validated['household_head_name'] ?? null,
+            'address' => $validated['address'],
+            'barangay' => $household->barangay ?: 'N/A',
+            'purok' => $validated['purok'] ?? null,
+        ]);
         return redirect()->route('households.index')->with('success', 'Household updated successfully!');
     }
 

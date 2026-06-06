@@ -187,8 +187,9 @@
             <div class="form-group">
                 <label for="role" class="form-label">Login as</label>
                 <select id="role" name="role" class="form-select" required>
-                    <option value="resident">Resident</option>
-                    <option value="admin">Admin</option>
+                    <option value="" disabled {{ old('role') ? '' : 'selected' }}>Choose account type</option>
+                    <option value="resident" {{ old('role') == 'resident' ? 'selected' : '' }}>Resident</option>
+                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>
 
                 @error('role')

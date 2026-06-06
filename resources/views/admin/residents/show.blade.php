@@ -19,8 +19,8 @@
                     <p>{{ $resident->household?->address ?? 'Unassigned' }}</p>
                 </div>
                 <div class="mb-3">
-                    <strong>Address:</strong>
-                    <p>{{ $resident->address }}</p>
+                    <strong>Zone:</strong>
+                    <p>{{ $resident->household?->purok ?? 'N/A' }}</p>
                 </div>
                 <div class="mb-3">
                     <strong>Birth Date:</strong>

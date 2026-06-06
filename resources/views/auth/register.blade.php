@@ -201,16 +201,7 @@
                 @enderror
             </div>
 
-            <div class="form-group">
-                <label for="role" class="form-label">Register as</label>
-                <select id="role" name="role" class="form-select" required>
-                    <option value="resident">Resident</option>
-                </select>
-
-                @error('role')
-                    <div class="error-text">{{ $message }}</div>
-                @enderror
-            </div>
+      
 
             <div class="auth-actions">
                 <a class="auth-link" href="{{ route('login') }}">
